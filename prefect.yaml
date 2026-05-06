@@ -1,0 +1,33 @@
+# Prefect deployment for Sidis Atlassian MCP Server
+# horizon.prefect.io/sidis-group/servers
+
+name: sidis-atlassian-mcp
+prefect-version: "3.x"
+
+build: null
+push: null
+
+pull:
+  - prefect.deployments.steps.git_clone:
+      repository: "."
+
+deployments:
+  - name: sidis-atlassian-mcp
+    version: "1.0.0"
+    tags:
+      - mcp
+      - atlassian
+      - jira
+      - confluence
+
+    work_pool:
+      name: sidis-group-servers
+      work_queue_name: default
+
+    # Run as a long-running process server
+    entrypoint: server.py
+
+    parameters: {}
+
+    # Keep alive — this is a persistent MCP server
+    schedules: []
